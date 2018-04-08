@@ -15,4 +15,4 @@ dist.matrix = distm(cbind(longitude, latitude), cbind(longitude, latitude), fun 
 weights = max(dist.matrix) / dist.matrix
 diag(weights) = 0
 summary(as.numeric(weights))
-weights = ifelse(weights > 10, 10, weights)
+weights = ifelse(weights > 10, 10, weights) # weight not exceeding 10

@@ -1,7 +1,16 @@
+library(geosphere)
+library(ggplot2)
+library(ggmap)
+library(maps)
+library(mapdata)
+library(spdep)
+###
+source("Code/MoranI.R")
+source("Code/Phi.R")
+###
 nyc = read.csv("Data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv", sep = ",", header = TRUE)
 names(nyc)
 
-library(geosphere)
 latitude = nyc$Entrance.Latitude
 longitude = nyc$Entrance.Longitude
 longitude[which(longitude > 0)] = -longitude[which(longitude > 0)] #correct typo
@@ -11,8 +20,6 @@ diag(nyc.weight.mat) = 0
 nyc.weight.mat = ifelse(nyc.weight.mat > 2000, 2000, nyc.weight.mat)
 
 nyc.entrance.type.Phi = make.permute.Phi(nyc.weight.mat, as.integer(nyc$Entrance.Type), 500)
-## join count
-
 ### map ###
 ditch_the_axes <- theme(
   axis.text = element_blank(),
@@ -44,6 +51,6 @@ nyc.map = ggmap(nyc_base) +
            label = paste("P-value (permutation) :",  formatC(nyc.entrance.type.Phi[3], 4, format = "f")), parse = TRUE)
 
 
-pdf("figure/nycmap.pdf", height = 17, width = 18)
+pdf("Figure/nycmap.pdf", height = 17, width = 18)
 nyc.map
 dev.off()  
